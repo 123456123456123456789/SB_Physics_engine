@@ -24,19 +24,41 @@ typedef struct directed_line_segment{
 //矩形碰撞体积
 class box_collider{
 	public:
+		box_collider();
+		box_collider(float pos[2],float ver[12],int own,int mod);
+		~box_collider();
 		void force(dls f);
 		void update(void);
 	private:
-		float vertex[8];
-		float position[2];
-		dls momentum;
+		int owner;
+		int mode;
+		float acc;             //加速度
+		float mass;         //质量
+		float vertex[12];      //顶点与每个顶点的质量，型如x,y,m
+		float position[2];     //位置
+		float particle[2];     //质点相对位置
+		dls momentum;          //动量
+};
+
+//碰撞对象(待加入)
+class collition{
+	public:
+		collition();
+		collition(box_collider &custom1,box_collider &custom2);
+		~collition();
+	private:
+		box_collider custom[2];
+		float miu;                 //两物间摩擦系数
 };
 
 //材质
+//这里的u为SBPH自设物理量，大小为0<u<1，计算成两物摩擦系数时计算方法为(u1+u2)/2
 typedef struct material{
 	float e;
 	float u;
-}
+}material;
+
+void get_box_particle(float vertexs[12],float m);
 
 #endif
 #ifdef SBPH
