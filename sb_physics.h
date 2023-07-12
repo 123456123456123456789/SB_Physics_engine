@@ -10,6 +10,9 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<math.h>
+#include<time.h>
+
 
 //向量
 typedef struct vector{
@@ -32,6 +35,7 @@ class SB_box_collider{
 //		void update(void);
 //		void hit(box_collider *custom);
 	private:
+		
 		int owner;
 		int mode;
 		float acc;             //加速度
