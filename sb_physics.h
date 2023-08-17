@@ -11,6 +11,10 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+//全局设置
+float gravityAcc = -0.2;
+
+
 //向量
 typedef struct vector{
 	float value[2];
@@ -21,6 +25,11 @@ typedef struct directed_line_segment{
 	vector direction;
 	float position[2];
 }dls;
+
+//线段
+typedef struct line_segment{
+	float value[4];
+}line;
 
 //矩形碰撞体积
 class SB_box_collider{
@@ -33,13 +42,18 @@ class SB_box_collider{
 //		void hit(box_collider *custom);
 	private:
 		int owner;
-		int mode;
-		float acc;             //加速度
+		int mode;				//0为静态，1为无角动量，2为有角动量
+		float velocity[2];		//速度
+		float acc[2];             //加速度
 		float mass;         //质量
+		float energy;		//不包括热能
+		float gravityfac;		//重力系数
 		float vertex[12];      //顶点与每个顶点的质量，型如x,y,m
 		float position[2];     //位置
 		float particle[2];     //质点相对位置
 		dls momentum;          //动量
+		bool niudunable;        //是否受重力
+		
 };
 
 //碰撞对象(待加入)
@@ -55,6 +69,7 @@ class SB_collition{
 
 //材质
 //这里的u为SBPH自设物理量，大小为0<u<1，计算成两物摩擦系数时计算方法为(u1+u2)/2
+//↑过于愚蠢的物理量，需要改进：u=(u1*u2)/(u1+u2)，u1 u2任意一个为0则无摩擦
 typedef struct material{
 	float e;
 	float u;
